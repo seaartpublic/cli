@@ -26,13 +26,13 @@ This repository is the public distribution and documentation repository for SeaA
 macOS and Linux users can install the latest release with:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- -y --scope user
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- -y --scope user
 ```
 
 If you want to install SeaArt skill files for specific AI coding tools, pass `--platform` explicitly:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- -y --scope user --platform claude-code,codex
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- -y --scope user --platform claude-code,codex
 ```
 
 Supported skill platforms are:
@@ -47,7 +47,7 @@ Supported skill platforms are:
 You can also ask your local AI agent, such as Claude Code or Codex, to install SeaArt AI for you. Copy this prompt into the agent:
 
 ```text
-Install SeaArt AI from https://public.cdn.seaspark.ai/ai-tool/install.md
+Install SeaArt AI from https://raw.githubusercontent.com/seaartpublic/cli/main/install.md
 ```
 
 The agent-facing installation guide is also available in this repository: [install.md](./install.md).
@@ -56,6 +56,12 @@ The agent-facing installation guide is also available in this repository: [insta
 
 Download the archive matching your OS and CPU architecture from [GitHub Releases](https://github.com/seaartpublic/cli/releases), extract it, and place the `seaart` binary in a directory on your `PATH`.
 
+Example release package URL:
+
+```text
+https://github.com/seaartpublic/cli/releases/download/v1.0.0/seaart-darwin-amd64.tar.gz
+```
+
 Windows users should download a `.zip` archive. macOS and Linux users should download a `.tar.gz` archive.
 
 ### Install only SeaArt MCP
@@ -63,7 +69,7 @@ Windows users should download a `.zip` archive. macOS and Linux users should dow
 When you explicitly want only the MCP binary:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- mcp -y
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- mcp -y
 ```
 
 Then verify:
@@ -287,7 +293,7 @@ For AI agents, see [install.md](./install.md). It describes user-level installat
 Run the installer again to install the latest release:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- -y --scope user
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- -y --scope user
 ```
 
 Or download a newer archive from [GitHub Releases](https://github.com/seaartpublic/cli/releases) and replace the binary in your `PATH`.

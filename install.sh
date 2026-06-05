@@ -37,7 +37,7 @@ set -e
 # ---------------------------------------------------------------------------
 # Global defaults
 # ---------------------------------------------------------------------------
-DEFAULT_SOURCE_URL="https://public.cdn.seaspark.ai/ai-tool"
+DEFAULT_SOURCE_URL="https://github.com/seaartpublic/cli/releases"
 YES_MODE="0"
 NO_MODIFY_PATH="0"
 PATH_WAS_MODIFIED="0"
@@ -903,7 +903,11 @@ prepare_remote_package() {
   fi
 
   build_archive_name
-  BASE_URL="${SOURCE}/release/${VERSION}"
+  if [ "$VERSION" = "latest" ]; then
+    BASE_URL="${SOURCE}/latest/download"
+  else
+    BASE_URL="${SOURCE}/download/${VERSION}"
+  fi
   PACKAGE_ARCHIVE="${TMP_DIR}/${PACKAGE_ARCHIVE_NAME}"
 
   info "Installing from: ${SOURCE}"

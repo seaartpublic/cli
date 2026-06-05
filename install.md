@@ -5,7 +5,7 @@
 Copy this prompt to your local AI agent, such as Claude Code or Codex:
 
 ```text
-Install SeaArt AI from https://public.cdn.seaspark.ai/ai-tool/install.md
+Install SeaArt AI from https://raw.githubusercontent.com/seaartpublic/cli/main/install.md
 ```
 
 ---
@@ -32,19 +32,25 @@ When installing SeaArt AI CLI, stay within these limits:
 Base URL:
 
 ```text
-https://public.cdn.seaspark.ai/ai-tool
+https://github.com/seaartpublic/cli/releases
 ```
 
-Latest release directory:
+Latest release download directory:
 
 ```text
-https://public.cdn.seaspark.ai/ai-tool/release/latest
+https://github.com/seaartpublic/cli/releases/latest/download
+```
+
+Example versioned release package URL:
+
+```text
+https://github.com/seaartpublic/cli/releases/download/v1.0.0/seaart-darwin-amd64.tar.gz
 ```
 
 This guide URL:
 
 ```text
-https://public.cdn.seaspark.ai/ai-tool/install.md
+https://raw.githubusercontent.com/seaartpublic/cli/main/install.md
 ```
 
 ### Release file naming
@@ -92,13 +98,13 @@ Use user-level install only. The default command should include `-y` and `--scop
 Recommended command:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- -y --scope user
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- -y --scope user
 ```
 
 If you can confidently detect platforms, pass them explicitly. For example:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- -y --scope user --platform claude-code,codex
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- -y --scope user --platform claude-code,codex
 ```
 
 Do not use `--scope project` unless the user explicitly asks for project-level installation.
@@ -118,7 +124,7 @@ seaart --help
 When the user explicitly wants only the MCP binary, run:
 
 ```bash
-curl -fsSL https://public.cdn.seaspark.ai/ai-tool/release/latest/install.sh | bash -s -- mcp -y
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- mcp -y
 ```
 
 Verify:
@@ -161,7 +167,7 @@ Use the OS temp directory for downloads and extraction.
 PowerShell example:
 
 ```powershell
-$BaseUrl = 'https://public.cdn.seaspark.ai/ai-tool/release/latest'
+$BaseUrl = 'https://github.com/seaartpublic/cli/releases/latest/download'
 $Archive = 'seaart-windows-amd64.zip'
 $TempRoot = Join-Path $env:TEMP ('seaart-install-' + [guid]::NewGuid().ToString('N'))
 New-Item -ItemType Directory -Path $TempRoot -Force | Out-Null
