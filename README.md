@@ -13,6 +13,7 @@ This repository is the public distribution and documentation repository for SeaA
 - [Quickstart](#quickstart)
 - [Release assets](#release-assets)
 - [Commands](#commands)
+- [MCP installation](#mcp-installation)
 - [Agent installation](#agent-installation)
 - [Updating](#updating)
 - [Troubleshooting](#troubleshooting)
@@ -284,9 +285,151 @@ SeaArt also ships an optional MCP server binary named `seaart-mcp`.
 | `--port` | Remote MCP port for printed configuration. |
 | `--binary` | SeaArt MCP binary path to print in MCP config. |
 
-## Agent installation
+## MCP installation
 
-For AI agents, see [install.md](./install.md). It describes user-level installation boundaries, supported release files, verification steps, and skill installation paths.
+SeaArt MCP uses the dedicated `seaart-mcp` binary. Install it explicitly when you only need MCP:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/seaartpublic/cli/main/install.sh | bash -s -- mcp -y
+```
+
+Confirm both the SeaArt CLI and MCP binaries are available:
+
+```bash
+command -v seaart
+command -v seaart-mcp
+seaart version
+seaart-mcp --help
+```
+
+Log in with normal CLI mode before using MCP tools. MCP reuses the local SeaArt CLI authentication state and does not expose login or logout tools:
+
+```bash
+seaart login
+seaart account assets
+```
+
+### Run the MCP server
+
+Local stdio mode is the default and is the recommended mode when your MCP client starts the server process directly:
+
+```bash
+seaart-mcp serve
+```
+
+Use this client configuration shape:
+
+```json
+{
+  "mcpServers": {
+    "seaart": {
+      "command": "seaart-mcp",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+If your MCP client cannot find `seaart-mcp` from `PATH`, use an absolute binary path:
+
+```json
+{
+  "mcpServers": {
+    "seaart": {
+      "command": "/usr/local/bin/seaart-mcp",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+Remote HTTP mode is available when you need a separately running local MCP server:
+
+```bash
+seaart-mcp serve --host 127.0.0.1 --port 8787
+```
+
+Use this configuration shape when the client supports Streamable HTTP:
+
+```json
+{
+  "mcpServers": {
+    "seaart": {
+      "url": "http://127.0.0.1:8787/mcp"
+    }
+  }
+}
+```
+
+Only bind to `0.0.0.0` when you intentionally want to expose your local authenticated SeaArt CLI session.
+
+### Client configuration examples
+
+Claude Code project scope uses `.mcp.json` in the project root:
+
+```json
+{
+  "mcpServers": {
+    "seaart": {
+      "command": "seaart-mcp",
+      "args": ["serve"]
+    }
+  }
+}
+```
+
+Claude Code user scope can use `~/.claude/mcp.json`, or add the stdio server from the CLI:
+
+```bash
+claude mcp add --transport stdio seaart -- seaart-mcp serve
+```
+
+Cursor project scope uses `.cursor/mcp.json`; user scope uses `~/.cursor/mcp.json` with the same JSON shape.
+
+Gemini CLI commonly reads MCP configuration from `settings.json`:
+
+```json
+{
+  "mcpServers": {
+    "seaart": {
+      "command": "seaart-mcp",
+      "args": ["serve"],
+      "timeout": 600000,
+      "trust": false
+    }
+  }
+}
+```
+
+Codex uses TOML in `~/.codex/config.toml` or a project config:
+
+```toml
+[mcp_servers.seaart]
+command = "seaart-mcp"
+args = ["serve"]
+```
+
+OpenClaw project scope uses `.openclaw/mcp.json`; user scope uses `~/.openclaw/mcp.json` with the same JSON shape as the basic stdio configuration.
+
+### Verify MCP setup
+
+Restart your MCP client after editing configuration, then check that SeaArt MCP tools are listed. Expected tools include:
+
+- `list_models`
+- `get_model_params`
+- `list_loras`
+- `parse_resource`
+- `get_account_assets`
+- `generate_image`
+- `estimate_image`
+- `text2video`
+- `image2video`
+- `reference2video`
+- `get_task_status`
+
+Then run a lightweight account check through the MCP client with the `get_account_assets` tool.
+
+For stdio clients, generation tools should use `no_wait=true` and then poll with `get_task_status`, because stdio cannot receive SSE progress events without polluting the JSON-RPC stream.
 
 ## Updating
 
